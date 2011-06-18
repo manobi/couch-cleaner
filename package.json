@@ -1,6 +1,14 @@
 {
-	"name": "Couch-cleaner",
+	"name": "couch-cleaner",
 	"version": "0.0.1",
 	"main": "./couch-cleaner.js",
-	"bin": {"couch-cleaner":"./bin/couch-cleaner"}
+	"bin": {"couch-cleaner":"./bin/couch-cleaner"},
+	"dependencies": {
+	    "optparse": ">= 1.0.1",
+	    "step": ">= 0.0.4",
+		"cradle": ">= 0.5.5"
+	  },
+	  "devDependencies": {
+	    "jasmine-node": ">= 1.0.6"
+	  }
 }
