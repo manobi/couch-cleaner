@@ -7,19 +7,27 @@ Use it to reset your database, after tests.
 * Filter docs from cleanup
 
 ## How to use
-*Removing all docs from database "starwars":
+Removing all docs from database "starwars":
 
 
 > couch-cleaner 127.0.0.1:5984/starwars -all
 
-*if your couchdb is in localhost, you can also do:
+if your couchdb is in localhost, you can also do:
+
+
 > couch-cleaner starwars -all
 
-*Filtering some docs from cleanup (pass IDs as argument):
+Filtering some docs from cleanup (pass IDs as argument):
+
+
 > couch-cleaner 127.0.0.1:5984/dbname --filter id123 id456 id8910
 
 `NOT IMPLEMENTED YET //TODO`
-*Use couchdb design/filter function to safe some docs from deletation:
+
+
+Use couchdb design/filter function to safe some docs from deletation:
+
+
 > couch-cleaner 127.0.0.1:5984/dbname --filter _design/_id/filters/clicks
 
 Read the specs, to see how your can use as node.js module. I will document it later.
