@@ -28,8 +28,11 @@ Read the specs, to see how your can use as node.js module. I will document it la
 
 ## How run the tests
 > npm install -g jasmine-node
+
 > run run
+
 > jasmine-node spec
+
 > If is it green, it's ok.
 
 
