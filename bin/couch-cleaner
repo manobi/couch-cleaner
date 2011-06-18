@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+var url = require("url");
+var path = require("path");
+var CouchCleaner = require("../couch-cleaner");
+var optparse = require('optparse');
+
+var database = process.ARGV[2];
+var cuiCleaner = new CouchCleaner(database);
+
+// Define some options
+var SWITCHES = [
+    ['-a', '--all', "clear all docs"],
+    ['-f', '--filter', "filter some docs from cleanup"],
+    ['-h', '--help', "Shows this help section"]
+];
+
+// Create a new OptionParser with defined switches
+var parser = new optparse.OptionParser(SWITCHES);
+parser.banner = 'Usage: couch-cleaner database [options]';
+
+//Handle the --filter switch
+parser.on('filter', function(command) {
+	
+	var start = process.ARGV.indexOf("--filter") + 1;
+	var end =  process.ARGV.length;
+	
+	var exceptions = process.ARGV.slice(start,end);
+	
+	cuiCleaner.filter(exceptions);
+	cuiCleaner.clear();
+});
+
+parser.on('all', function(command) {
+	cuiCleaner.clear();
+});
+
+//Handle the --help switch
+parser.on('help', function() {
+	console.log(parser.toString());
+});
+
+// Parse command line arguments
+parser.parse(process.ARGV);

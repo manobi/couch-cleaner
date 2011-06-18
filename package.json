@@ -1,0 +1,6 @@
+{
+	"name": "Couch-cleaner",
+	"version": "0.0.1",
+	"main": "./couch-cleaner.js",
+	"bin": {"couch-cleaner":"./bin/couch-cleaner"}
+}
