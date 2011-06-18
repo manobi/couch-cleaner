@@ -7,6 +7,8 @@ Use it to reset your database, after tests.
 * Filter docs from cleanup
 
 ## How to use
+*Removing all docs from database "starwars":
+
 
 > couch-cleaner 127.0.0.1:5984/starwars -all
 
