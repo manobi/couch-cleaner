@@ -1,7 +1,6 @@
 # Couch Cleaner
 No, it's not an alvejant product. This is a Couchdb Cleaner.
 This project is highly inpired by https://github.com/emerleite/node-database-cleaner
-====================================================================================
 Use it to reset your database, after tests.
 ## Features
 * Clean all docs
