@@ -1,11 +1,11 @@
 # Couch Cleaner
 No, it's not an alvejant product. This is a Couchdb Cleaner.
 This project is highly inpired by https://github.com/emerleite/node-database-cleaner
-
+====================================================================================
 Use it to reset your database, after tests.
 ## Features
--- Clean all docs
--- Filter docs from cleanup
+* Clean all docs
+* Filter docs from cleanup
 
 ## How to use
 Removing all docs from database "starwars":
@@ -24,14 +24,14 @@ couch-cleaner 127.0.0.1:5984/dbname --filter _design/_id/filters/clicks
 Read the specs, to see how your can use as node.js module. I will document it later.
 
 ## How to install 
-`npm install -g couch-cleaner`
+> npm install -g couch-cleaner
 
 
 ## How run the tests
-`npm install -g jasmine-node`
-run run
-jasmine-node spec
-ìf is it green, it's ok.
+> npm install -g jasmine-node
+> run run
+> jasmine-node spec
+> If is it green, it's ok.
 
 
 # License:
