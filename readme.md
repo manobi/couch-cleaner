@@ -8,12 +8,15 @@ Use it to reset your database, after tests.
 
 ## How to use
 Removing all docs from database "starwars":
+
 > couch-cleaner 127.0.0.1:5984/starwars -all
 
 if your couchdb is in localhost, you can also do:
+
 > couch-cleaner starwars -all
 
 Filtering some docs from cleanup (pass IDs as argument)
+
 > couch-cleaner 127.0.0.1:5984/dbname --filter id123 id456 id8910
 
 `NOT IMPLEMENTED YET //TODO`
