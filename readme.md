@@ -1,5 +1,5 @@
 # Couch Cleaner
-No, it's not an alvejant product. This is a Couchdb Cleaner.
+`Relax` it's not an water based product or jet vacuum. This is a Couchdb Cleaner.
 This project is highly inspired by https://github.com/emerleite/node-database-cleaner
 
 Use it to reset your database, after tests.
