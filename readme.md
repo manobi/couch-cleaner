@@ -22,14 +22,15 @@ Filtering some docs from cleanup (pass IDs as argument):
 
 > couch-cleaner 127.0.0.1:5984/dbname --filter id123 id456 id8910
 
-`NOT IMPLEMENTED YET //TODO
+```
+NOT IMPLEMENTED YET //TODO
 
 
 Use couchdb design/filter function to safe some docs from deletation:
 
 
 > couch-cleaner 127.0.0.1:5984/dbname --filter _design/_id/filters/clicks
-`
+```
 
 Read the specs, to see how your can use as node.js module. I will document it later.
 
