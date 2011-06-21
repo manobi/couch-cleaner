@@ -8,30 +8,30 @@ Use it to reset your database, after tests.
 * Filter docs from cleanup
 
 ## How to use
-* Removing all docs from database "starwars":
+#### Removing all docs from database "starwars":
 
 
 > couch-cleaner http://127.0.0.1:5984/starwars --all
 
-* If your couchdb is in localhost, you can also do:
+#### If your couchdb is in localhost, you can also do:
 
 
 > couch-cleaner starwars --all
 
-* Filtering some docs from cleanup (pass IDs as argument):
+#### Filtering some docs from cleanup (pass IDs as argument):
 
 
 > couch-cleaner http://127.0.0.1:5984/starwars --filter `id_luke` `id_leia` `id_vader`
 
 
 
-* Use couchdb design/filter function to safe some docs from deletation `NOT IMPLEMENTED YET`:
+#### Use couchdb design/filter function to safe some docs from deletation `NOT IMPLEMENTED YET`:
 
 
 > couch-cleaner http://127.0.0.1:5984/starwars --filter _design/_id/filters/skywalkers
 
 
-* Authentication is also suported in all cases
+#### Authentication is also suported in all cases
 
 
 > couch-cleaner http://`yoda_admin:th3F0rceB3W1thY0u`@127.0.0.1:5984/starwars --filter _design/_id/filters/skywalkers
