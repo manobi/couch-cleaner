@@ -5,7 +5,9 @@ var CouchCleaner = require("../couch-cleaner");
 var optparse = require('optparse');
 
 var database = process.ARGV[2];
-var cuiCleaner = new CouchCleaner(database);
+if(database){
+	var cuiCleaner = new CouchCleaner(database);
+}
 
 // Define some options
 var SWITCHES = [
@@ -38,6 +40,7 @@ parser.on('all', function(command) {
 parser.on('help', function() {
 	console.log(parser.toString());
 });
+
 
 // Parse command line arguments
 parser.parse(process.ARGV);
