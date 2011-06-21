@@ -7,7 +7,7 @@ Use it to reset your database, after tests.
 * Clean all docs
 * Filter docs from cleanup
 
-## How to use
+## How to use (in terminal)
 #### Removing all docs from database "starwars":
 
 
