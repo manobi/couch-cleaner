@@ -36,7 +36,7 @@ afterEach(function(){
 
 describe('.clean',function(){
 
-	var swCleaner = new Cleaner('starwars');
+	var swCleaner = new Cleaner('http://teste:teste@manobi.couchone.com:5984/starwars');
 	
 	it('should remove all docs with callback', function(){
 	

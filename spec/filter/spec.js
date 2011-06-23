@@ -26,7 +26,7 @@ beforeEach(function(){
 
 
 describe('.filter',function(){
-	var swCleaner = new Cleaner('starwars');
+	var swCleaner = new Cleaner('http://teste:teste@manobi.couchone.com:5984/starwars');
 
 	it('should filter some docs from deletation',function(){
 		swCleaner.filter(['vader','leia']).clear(function(err,result){
