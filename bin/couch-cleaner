@@ -13,12 +13,20 @@ if(database){
 var SWITCHES = [
     ['-a', '--all', "clear all docs"],
     ['-f', '--filter', "filter some docs from cleanup"],
+    ['-l', '--login', "pass login"],
+    ['-p', '--password', "pass password"],
     ['-h', '--help', "Shows this help section"]
 ];
 
 // Create a new OptionParser with defined switches
 var parser = new optparse.OptionParser(SWITCHES);
 parser.banner = 'Usage: couch-cleaner database [options]';
+
+//Handle the --filter switch
+parser.on('login', function(command) {
+	console.log(command);
+	console.log(process.ARGV);
+});
 
 //Handle the --filter switch
 parser.on('filter', function(command) {
