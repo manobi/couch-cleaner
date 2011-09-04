@@ -2,53 +2,64 @@
 var url = require("url");
 var path = require("path");
 var CouchCleaner = require("../couch-cleaner");
-var optparse = require('optparse');
+var program = require('commander');
+
+
+program
+  .version('0.0.1')
+  .option('-a, --all', 'clear all docs')
+  .option('-f, --filter [docs]', 'filter some docs from cleanup')
+  .option('-l, --login [user]', 'pass username to auth')
+  .parse(process.argv);
 
 var database = process.ARGV[2];
+var options = {};
 if(database){
-	var cuiCleaner = new CouchCleaner(database);
+	options = url.parse(database);
+	options.db = options.pathname.replace("/","");
+	if(options.hostname){
+		options.host = options.hostname;
+	}
+	else {
+		options.host = "localhost";
+	}
+	
+	if(!options.port){
+		options.port = 5984;
+	}
+	if(!options.procotocol){
+		options.procotocol = "http";
+	}
+	if(options.auth){
+		var auth = options.auth.split(":");
+		options.login = auth[0];
+		options.password = auth[1];
+	}
 }
 
-// Define some options
-var SWITCHES = [
-    ['-a', '--all', "clear all docs"],
-    ['-f', '--filter', "filter some docs from cleanup"],
-    ['-l', '--login', "pass login"],
-    ['-p', '--password', "pass password"],
-    ['-h', '--help', "Shows this help section"]
-];
-
-// Create a new OptionParser with defined switches
-var parser = new optparse.OptionParser(SWITCHES);
-parser.banner = 'Usage: couch-cleaner database [options]';
-
-//Handle the --filter switch
-parser.on('login', function(command) {
-	console.log(command);
-	console.log(process.ARGV);
-});
-
-//Handle the --filter switch
-parser.on('filter', function(command) {
-	
-	var start = process.ARGV.indexOf("--filter") + 1;
-	var end =  process.ARGV.length;
-	
-	var exceptions = process.ARGV.slice(start,end);
-	
-	cuiCleaner.filter(exceptions);
-	cuiCleaner.clear();
-});
-
-parser.on('all', function(command) {
-	cuiCleaner.clear();
-});
-
-//Handle the --help switch
-parser.on('help', function() {
-	console.log(parser.toString());
-});
 
 
-// Parse command line arguments
-parser.parse(process.ARGV);
+if(program.login){
+	options.login = program.login;
+	program.password('Password',function(key){
+		options.password = key;
+		process.stdin.destroy();
+		ready();
+	});
+}
+
+function ready(){
+	var cleaner = new CouchCleaner(options);
+	if(program.filter){
+		var docs = program.filter.split(',');
+		cleaner.filter(docs);
+	}
+	cleaner.clear();
+}
+
+
+//var cuiCleaner = new CouchCleaner(database);
+/**
+** couch-cleaner database --all
+** couch-cleaner database --filter vader leia skate
+**/
