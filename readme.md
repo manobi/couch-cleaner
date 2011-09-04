@@ -8,6 +8,12 @@ Use it to reset your database, after tests.
 * Filter docs from cleanup
 
 ## How to use (in terminal)
+#### Suport authentication 'NEW':
+
+
+> couch-cleaner http://127.0.0.1:5984/starwars --login username
+
+
 #### Removing all docs from database "starwars":
 
 
@@ -21,7 +27,7 @@ Use it to reset your database, after tests.
 #### Filtering some docs from cleanup (pass IDs as argument):
 
 
-> couch-cleaner http://127.0.0.1:5984/starwars --filter `id_luke` `id_leia` `id_vader`
+> couch-cleaner http://127.0.0.1:5984/starwars --filter id_luke,id_leia,id_vader
 
 
 
