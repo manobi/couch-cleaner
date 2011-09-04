@@ -4,9 +4,8 @@ var path = require("path");
 var CouchCleaner = require("../couch-cleaner");
 var program = require('commander');
 
-
 program
-  .version('0.0.1')
+  .version('0.0.3')
   .option('-a, --all', 'clear all docs')
   .option('-f, --filter [docs]', 'filter some docs from cleanup')
   .option('-l, --login [user]', 'pass username to auth')
@@ -17,19 +16,13 @@ var options = {};
 if(database){
 	options = url.parse(database);
 	options.db = options.pathname.replace("/","");
-	if(options.hostname){
-		options.host = options.hostname;
-	}
-	else {
-		options.host = "localhost";
-	}
 	
-	if(!options.port){
-		options.port = 5984;
-	}
-	if(!options.procotocol){
-		options.procotocol = "http";
-	}
+	if(options.hostname){ options.host = options.hostname;}
+	else {options.host = "localhost";}
+	
+	if(!options.port){ options.port = 5984;}
+	if(!options.procotocol){options.procotocol = "http";}
+	
 	if(options.auth){
 		var auth = options.auth.split(":");
 		options.login = auth[0];
@@ -38,10 +31,10 @@ if(database){
 }
 
 
-
 if(program.login){
+	options.auth = true;
 	options.login = program.login;
-	program.password('Password',function(key){
+	program.password('Password:',function(key){
 		options.password = key;
 		process.stdin.destroy();
 		ready();
@@ -57,8 +50,6 @@ function ready(){
 	cleaner.clear();
 }
 
-
-//var cuiCleaner = new CouchCleaner(database);
 /**
 ** couch-cleaner database --all
 ** couch-cleaner database --filter vader leia skate

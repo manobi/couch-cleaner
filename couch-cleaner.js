@@ -46,24 +46,19 @@ var msg = {
 	
 };
 
-var Cleaner = function (db) {
+var Cleaner = function (options) {
 	/** @private {Object} _self **/
 	var __construct = (function(_self){
-		var location = url.parse(db);
-		db = path.basename(url.parse(db).pathname);
-		if(location.hostname){
-			connection.host = location.hostname;
-			connection.port = location.port;
-			if(location.auth){
-				var auth = location.auth.split(":");
+			connection.host = options.host;
+			connection.port = options.port;
+			if(options.auth){
 				connection.auth = {};
-				connection.auth.username = auth[0];
-				connection.auth.password = auth[1];
+				connection.auth.username = options.login;
+				connection.auth.password = options.password;
 			}
-		};
 	})(this);
 	/** @public {Object} db **/
-	this.db = connection.database(db);
+	this.db = connection.database(options.db);
 	
 	var _self = this;
 	
@@ -104,12 +99,12 @@ var Cleaner = function (db) {
 		// Yeah! We have filters
 		else {
 			
-			_tmp = connection.database('tmp_' + db);
+			_tmp = connection.database('tmp_' + options.db);
 			
 			// Createa a temporary database
 			_tmp.create(function(result,err){/// ========= line  128
 				if(result) {
-					console.log (msg.tmp.ok);		
+					console.log(msg.tmp.ok);	
 				}
 			
 				// Save a backup of your filter data in tmp db
@@ -168,7 +163,7 @@ var Cleaner = function (db) {
 		
 		this.db.destroy(function(err,result){
 			if(result){
- 				this.db = connection.database(db);
+ 				this.db = connection.database(options.db);
 				this.db.create(function(err, result){
 					if(result) _self.emit('end',null,result);
 				});
