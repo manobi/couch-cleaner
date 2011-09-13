@@ -19,32 +19,7 @@ var connection = new(cradle.Connection)('http://127.0.0.1',5984, {
 	cache:false,
 //	auth:{username:undefined, password:undefined}
 });
-
-var msg = {
-	filter:{},
-	tmp:{
-		ok: "Tmp database is ready",
-		fail: "Tmp database fail",
-		destroy: "Tmp was destroyed",
-		notDestroy: "Tmp could not be destroyed"
-	},
-	backup: {
-		ok:"Backup success",
-		fail: "Sorry baby, your backup fail"
-	},
-	restore: {
-		ok: "Yeah, your backup has been restored",
-		fail: "Back could not possible restore your docs from backup"
-	},
-	clear: {
-		ok: "Finally your trash docs has gone",
-		fail: "Hey Brow, we found some problems to clean your database"
-	},
-	clearAll: {
-		ok: "all docs removed"
-	}
-	
-};
+var msg = require('./msgs');
 
 var Cleaner = function (options) {
 	/** @private {Object} _self **/
