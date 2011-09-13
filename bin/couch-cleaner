@@ -5,6 +5,8 @@ var CouchCleaner = require("../couch-cleaner");
 var program = require('commander');
 var EventEmitter = require('events').EventEmitter
 var emitter = new EventEmitter();
+
+// Api
 program
   .version('0.0.4')
   .option('-a, --all', 'clear all docs')
@@ -12,7 +14,9 @@ program
   .option('-l, --login [user]', 'pass username to auth')
   .parse(process.argv);
 
+// database name || adress
 var database = process.ARGV[2];
+
 var options = {};
 if(database){
 	options = url.parse(database);
@@ -31,7 +35,18 @@ if(database){
 	}
 }
 
+// Attach event
+emitter.on('ready',function(){
+	var cleaner = new CouchCleaner(options);
+	if(program.filter){
+		var docs = program.filter.split(',');
+		cleaner.filter(docs);
+	}
+	cleaner.clear();
+});
 
+
+// Event dispatcher
 if(program.login){
 	options.auth = true;
 	options.login = program.login;
@@ -44,12 +59,3 @@ if(program.login){
 else{
 	emitter.emit('ready');
 }
-
-emitter.on('ready',function(){
-	var cleaner = new CouchCleaner(options);
-	if(program.filter){
-		var docs = program.filter.split(',');
-		cleaner.filter(docs);
-	}
-	cleaner.clear();
-});

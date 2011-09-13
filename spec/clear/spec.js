@@ -36,7 +36,17 @@ afterEach(function(){
 
 describe('.clean',function(){
 
-	var swCleaner = new Cleaner('http://teste:teste@manobi.couchone.com:5984/starwars');
+	var config = { 
+	  db: 'starwars',
+	  host: 'manobi.couchone.com',
+	  port: 5984,
+	  auth: true,
+	  login: 'teste',
+	  password: 'teste' 
+	}
+
+	
+	var swCleaner = new Cleaner(config);
 	
 	it('should remove all docs with callback', function(){
 	
