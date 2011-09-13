@@ -3,9 +3,10 @@ var url = require("url");
 var path = require("path");
 var CouchCleaner = require("../couch-cleaner");
 var program = require('commander');
-
+var EventEmitter = require('events').EventEmitter
+var emitter = new EventEmitter();
 program
-  .version('0.0.3')
+  .version('0.0.4')
   .option('-a, --all', 'clear all docs')
   .option('-f, --filter [docs]', 'filter some docs from cleanup')
   .option('-l, --login [user]', 'pass username to auth')
@@ -37,20 +38,18 @@ if(program.login){
 	program.password('Password:',function(key){
 		options.password = key;
 		process.stdin.destroy();
-		ready();
+		emitter.emit('ready');
 	});
 }
+else{
+	emitter.emit('ready');
+}
 
-function ready(){
+emitter.on('ready',function(){
 	var cleaner = new CouchCleaner(options);
 	if(program.filter){
 		var docs = program.filter.split(',');
 		cleaner.filter(docs);
 	}
 	cleaner.clear();
-}
-
-/**
-** couch-cleaner database --all
-** couch-cleaner database --filter vader leia skate
-**/
+});

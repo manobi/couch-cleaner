@@ -1,7 +1,6 @@
 /**
 ** TODO: 
 ** -- Refactor of clear all
-** -- Msg as module
 ** -- Use Step
 ** -- Use couchdb filter /  export as couchchapp
 ** -- Remove personal data from lib / should be a config file
@@ -13,13 +12,12 @@ var util = require('util');
 var url = require("url");
 var path = require("path");
 var EventEmitter = require('events').EventEmitter;
-var Step = require("step");
 var cradle = require('cradle');
 var connection = new(cradle.Connection)('http://127.0.0.1',5984, {
 	cache:false,
 //	auth:{username:undefined, password:undefined}
 });
-var msg = require('./msgs');
+var msg = require('./msgs').msgs;
 
 var Cleaner = function (options) {
 	/** @private {Object} _self **/
