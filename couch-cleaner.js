@@ -72,56 +72,62 @@ var Cleaner = function (options) {
 		}
 		// Yeah! We have filters
 		else {
-			
-			
-			_tmp = connection.database('tmp_' + options.db);
-			
-			// Createa a temporary database
-			_tmp.create(function(result,err){/// ========= line  128
-				if(result) {
-					console.log(msg.tmp.ok);	
-				}
-			
-				// Save a backup of your filter data in tmp db
-				_self.db.replicate( _tmp.name , {doc_ids:_except}, function ( err, result) {
-					if (result) {
+				Step(
+					function createTmp(){
+						_tmp = connection.database('tmp_' + options.db);
+						_tmp.create(this);
+					},
+					function createTmpHandler(result, err){
+						if(result) {
+							console.log(msg.tmp.ok);	
+						}
+						else {
+							console.log('could not create a backup database');
+							return false;
+						}
+					},
+					function backup(){
+						_self.db.replicate(_tmp.name , {doc_ids:_except},this);
+					},
+					function backupHandler(err, result){
+						if (!result) return false;
 						console.log(msg.backup.ok);
-						
-						// Recreate your db cleaned
-						_self.db.destroy(function(err, ok){ // ====== clear all
-							if (ok) {
-								_self.db.create(function(err, created){
-									if (created) {
-										// Restore data to a cleaned database
-										_tmp.replicate(_self.db.name,function(err, replicated){
-											if (replicated) {
-												console.log(msg.restore.ok);
-												// Destroy temporary database
-												_tmp.destroy(function(err, destroyed){
-													if(destroyed){
-														if(callback){
-															callback(undefined, destroyed)
-														}
-														else {
-															_self.emit("end",undefined,destroyed)
-														}
-														console.log(msg.clear.ok);
-													};
-												});
-											};
-										});
-									};
-								})
-							};
-						});
+					},
+					function removeOld(){
+						_self.db.destroy(this);
+					},
+					function removeOldHandler(err, ok){
+						if(!ok) return false;
+					},
+					function createNew(){
+						_self.db.create(this);
+					},
+					function createNewHandler(err, created){
+						if (!created) return false;
+					},
+					function restoreData(){
+						_tmp.replicate(_self.db.name,this);
+					},
+					function restoreDataHandler(err, replicated){
+						if (!replicated) return false;
+						console.log(msg.restore.ok);
+					},
+					function removeTmp(){
+						_tmp.destroy(this);
+					},
+					function removeTmpHandler(err, destroyed){
+						if(destroyed){
+							if(callback){
+								callback(undefined, destroyed)
+							}
+							else {
+								_self.emit("end",undefined,destroyed)
+							}
+							console.log(msg.clear.ok);
+						};
 					}
-					else {
-						console.log(msg.backup.fail);
-						console.log(err);
-					};
-				});
-				
-			});
+				);
+
 		}
 		return this;
 	};
