@@ -47,7 +47,7 @@ var Cleaner = function (options) {
 	** return {Bollean}
 	**/
 	var _hasExceptions = function(){
-		return _except.length >= 0;
+		return _except.length > 0;
 	};
 	
 	/** 
@@ -72,62 +72,43 @@ var Cleaner = function (options) {
 		}
 		// Yeah! We have filters
 		else {
-				Step(
-					function createTmp(){
-						_tmp = connection.database('tmp_' + options.db);
-						_tmp.create(this);
-					},
-					function createTmpHandler(result, err){
-						if(result) {
-							console.log(msg.tmp.ok);	
-						}
-						else {
-							console.log('could not create a backup database');
-							return false;
-						}
-					},
-					function backup(){
-						_self.db.replicate(_tmp.name , {doc_ids:_except},this);
-					},
-					function backupHandler(err, result){
-						if (!result) return false;
-						console.log(msg.backup.ok);
-					},
-					function removeOld(){
-						_self.db.destroy(this);
-					},
-					function removeOldHandler(err, ok){
-						if(!ok) return false;
-					},
-					function createNew(){
-						_self.db.create(this);
-					},
-					function createNewHandler(err, created){
-						if (!created) return false;
-					},
-					function restoreData(){
-						_tmp.replicate(_self.db.name,this);
-					},
-					function restoreDataHandler(err, replicated){
-						if (!replicated) return false;
-						console.log(msg.restore.ok);
-					},
-					function removeTmp(){
-						_tmp.destroy(this);
-					},
-					function removeTmpHandler(err, destroyed){
-						if(destroyed){
-							if(callback){
-								callback(undefined, destroyed)
-							}
-							else {
-								_self.emit("end",undefined,destroyed)
-							}
-							console.log(msg.clear.ok);
-						};
+			_tmp = connection.database('tmp_' + options.db);
+			_tmp.create(function(err,result){
+					if(err != null) {
+						console.log(err);
+						return false;
 					}
-				);
-
+					else {
+						console.log("criou tmp");
+						_self.db.replicate(_tmp.name , {doc_ids:_except},function(err,result){
+							if(result){
+								_self.db.destroy(function(err, result){
+									if(result){
+										_self.db.create(function(err, result){
+											if(result){
+												_tmp.replicate(_self.db.name,function(err, result){
+													if(result){
+														_tmp.destroy(function(err, result){
+															if(result){
+																if(callback){
+																	callback(undefined, result)
+																}
+																else {
+																	_self.emit("end",undefined,result)
+																}
+																console.log(msg.clear.ok);
+															}
+														});
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+			});
 		}
 		return this;
 	};
