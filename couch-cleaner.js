@@ -137,12 +137,12 @@ var Cleaner = function (options) {
 						for(var i = 0; i < result.length; i++){
 							_except.push(result[i]['id']);
 						}
-						_self.emit("start");
 					} else {
-						result[i]['id']
+						console.log(err);
 					}
 				});
 			};
+			_self.emit("start");
 		}
 		return this;
 	};
