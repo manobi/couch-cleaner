@@ -11,6 +11,7 @@ program
   .version('0.0.4')
   .option('-a, --all', 'clear all docs')
   .option('-f, --filter [docs]', 'filter some docs from cleanup')
+  .option('-g, --gestalt', 'filter all design docs from cleanup')
   .option('-l, --login [user]', 'pass username to auth')
   .parse(process.argv);
 
@@ -38,13 +39,17 @@ if(database){
 // Attach event
 emitter.on('ready',function(){
 	var cleaner = new CouchCleaner(options);
+	
+	if(program.gestalt){
+		cleaner.gestalt = true;
+	}
+	
 	if(program.filter){
 		var docs = program.filter.split(',');
 		cleaner.filter(docs);
 	}
 	cleaner.clear();
 });
-
 
 // Event dispatcher
 if(program.login){

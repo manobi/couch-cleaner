@@ -59,6 +59,64 @@ var Cleaner = function (options) {
 		_except = ids;
 		return this;
 	};
+
+	
+	this.setEvents = function(){
+	
+		this.on("restore",function(err, result){
+			if(result){
+				_tmp.destroy(function(err, result){
+					if(result){
+						_self.emit("end",undefined,result);
+					}
+				});
+			}
+		});
+		
+		this.on("recreate",function(err, result){
+			if(result){
+				_tmp.replicate(_self.db.name,function(err, result){
+					_self.emit("restore",err, result);
+				});
+			}
+		});
+		
+		this.on("destroy",function(err, result){
+			if(result){
+				_self.db.create(function(err, result){
+					_self.emit("recreate",err, result);
+				});
+			}
+		});
+		
+		
+		this.on("backup",function(err, result){
+			if(result){
+				_self.db.destroy(function(err, result){
+					_self.emit("destroy",err, result);
+				});
+			}
+		});
+
+		
+		/**
+		* Create and replicate data
+		*/
+		this.on("start",function(err, result){
+			_tmp = connection.database('tmp_' + options.db);
+			_tmp.create(function(err,result){
+				if(err != null) {
+					console.log(err);
+					return false;
+				}
+				else {
+					_self.db.replicate(_tmp.name , {doc_ids:_except},function(err,result){
+						_self.emit("backup",err, result);
+					});
+				}
+			});
+		});
+	}
 	
 	/** 
 	** @public {Function} filter 
@@ -72,43 +130,19 @@ var Cleaner = function (options) {
 		}
 		// Yeah! We have filters
 		else {
-			_tmp = connection.database('tmp_' + options.db);
-			_tmp.create(function(err,result){
-					if(err != null) {
-						console.log(err);
-						return false;
+			this.setEvents();
+			if(this.gestalt){
+				this.db.all({startkey:'"_design/"',endkey:'"_design0"'},function(err, result){
+					if(result){
+						for(var i = 0; i < result.length; i++){
+							_except.push(result[i]['id']);
+						}
+						_self.emit("start");
+					} else {
+						result[i]['id']
 					}
-					else {
-						console.log("criou tmp");
-						_self.db.replicate(_tmp.name , {doc_ids:_except},function(err,result){
-							if(result){
-								_self.db.destroy(function(err, result){
-									if(result){
-										_self.db.create(function(err, result){
-											if(result){
-												_tmp.replicate(_self.db.name,function(err, result){
-													if(result){
-														_tmp.destroy(function(err, result){
-															if(result){
-																if(callback){
-																	callback(undefined, result)
-																}
-																else {
-																	_self.emit("end",undefined,result)
-																}
-																console.log(msg.clear.ok);
-															}
-														});
-													}
-												});
-											}
-										});
-									}
-								});
-							}
-						});
-					}
-			});
+				});
+			};
 		}
 		return this;
 	};
@@ -131,7 +165,8 @@ var Cleaner = function (options) {
 				});
 			}
 			else {
-				_self.emit('error',err);
+				console.log(err);
+//				_self.emit('error',err);
 				console.log(err);
 			}
 		});
