@@ -4,44 +4,30 @@ This project is highly inspired by https://github.com/emerleite/node-database-cl
 
 Use it to reset your database, after tests.
 ## Features
-* Clean all docs
-* Filter docs from cleanup
+* Clean all docs // --all
+* Filter some docs from cleanup // --filter
+* Filter all design docs from cleanup // --gestalt
 
-## How to use (in terminal)
-#### Suport authentication 'NEW':
+## How to use (In terminal)
+> couch-cleaner http://127.0.0.1:5984/starwars
 
-
-> couch-cleaner http://127.0.0.1:5984/starwars --login username
-
-
-#### Removing all docs from database "starwars":
-
-
+#### Removing all docs:
 > couch-cleaner http://127.0.0.1:5984/starwars --all
-
-#### If your couchdb is in localhost, you can also do:
-
-
+ or (in localhost)
 > couch-cleaner starwars --all
 
 #### Filtering some docs from cleanup (pass IDs as argument):
+> couch-cleaner http://127.0.0.1:5984/starwars --filter luke, leia, vader
 
+#### Filter all design docs from cleanup
+> couch-cleaner http://127.0.0.1:5984/starwars --gestalt
 
-> couch-cleaner http://127.0.0.1:5984/starwars --filter id_luke,id_leia,id_vader
+#### Authentication is suported in all options
 
-
-
-#### Use couchdb design/filter function to safe some docs from deletation `NOT IMPLEMENTED YET`:
-
-
-> couch-cleaner http://127.0.0.1:5984/starwars --filter _design/_id/filters/skywalkers
-
-
-#### Authentication is also suported in all cases
-
-
-> couch-cleaner http://`yoda_admin:th3F0rceB3W1thY0u`@127.0.0.1:5984/starwars --filter _design/_id/filters/skywalkers
-
+> couch-cleaner http://admin:password@127.0.0.1:5984/starwars --filter luke, leia, vader
+or
+> couch-cleaner http://127.0.0.1:5984/starwars --filter luke, leia, vader --login admin
+'Will ask for password as input'
 
 Read the specs, to see how your can use as node.js module. I will document it later.
 
