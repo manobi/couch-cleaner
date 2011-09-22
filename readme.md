@@ -13,7 +13,9 @@ Use it to reset your database, after tests.
 
 #### Removing all docs:
 > couch-cleaner http://127.0.0.1:5984/starwars --all
+
  or (in localhost)
+
 > couch-cleaner starwars --all
 
 #### Filtering some docs from cleanup (pass IDs as argument):
@@ -25,7 +27,9 @@ Use it to reset your database, after tests.
 #### Authentication is suported in all options
 
 > couch-cleaner http://admin:password@127.0.0.1:5984/starwars --filter luke, leia, vader
+
 or
+
 > couch-cleaner http://127.0.0.1:5984/starwars --filter luke, leia, vader --login admin
 'Will ask for password as input'
 
