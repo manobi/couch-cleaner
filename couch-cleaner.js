@@ -125,25 +125,29 @@ var Cleaner = function (options) {
 	**/
 	this.clear = function (callback) {
 		// No filters ? Burn them all
-		if ( !_hasExceptions() ) {
+		this.setEvents();
+		if(this.gestalt){
+			return this.db.all({startkey:'"_design/"',endkey:'"_design0"'},function(err, result){
+				if(result){
+					console.log("--gestalt");
+					for(var i = 0; i < result.length; i++){
+						_except.push(result[i]['id']);
+					}
+					_self.emit("start");
+				} else {
+					console.log(err);
+				}
+			});
+		}
+		
+		if ( _hasExceptions() ) {
+			console.log("--filter");
+			_self.emit("start");
+		} else {
+			console.log("--all");
 			this.clearAll(callback);
 		}
-		// Yeah! We have filters
-		else {
-			this.setEvents();
-			if(this.gestalt){
-				this.db.all({startkey:'"_design/"',endkey:'"_design0"'},function(err, result){
-					if(result){
-						for(var i = 0; i < result.length; i++){
-							_except.push(result[i]['id']);
-						}
-					} else {
-						console.log(err);
-					}
-				});
-			};
-			_self.emit("start");
-		}
+		
 		return this;
 	};
 	
@@ -165,8 +169,6 @@ var Cleaner = function (options) {
 				});
 			}
 			else {
-				console.log(err);
-//				_self.emit('error',err);
 				console.log(err);
 			}
 		});
