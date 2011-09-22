@@ -33,6 +33,7 @@ or
 > couch-cleaner http://127.0.0.1:5984/starwars --filter luke, leia, vader --login admin
 'Will ask for password as input'
 
+## How to use (As node.js module)
 Read the specs, to see how your can use as node.js module. I will document it later.
 
 ## How to install 
