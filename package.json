@@ -1,6 +1,6 @@
 {
 	"name": "couch-cleaner",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"main": "./couch-cleaner.js",
 	"bin": {"couch-cleaner":"./bin/couch-cleaner"},
 	"dependencies": {

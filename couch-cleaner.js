@@ -1,7 +1,6 @@
 /**
 ** TODO: 
 ** -- Refactor of clear all
-** -- Use Step
 ** -- Use couchdb filter /  export as couchchapp
 ** -- Remove personal data from lib / should be a config file
 ** -- Create  bin file for better performace
