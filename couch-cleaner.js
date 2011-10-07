@@ -11,7 +11,6 @@
 var util = require('util');
 var url = require("url");
 var path = require("path");
-var Step = require("step");
 var EventEmitter = require('events').EventEmitter;
 var cradle = require('cradle');
 var connection = new(cradle.Connection)('http://127.0.0.1',5984, {
