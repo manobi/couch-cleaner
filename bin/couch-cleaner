@@ -41,7 +41,7 @@ emitter.on('ready',function(){
 	var cleaner = new CouchCleaner(options);
 	
 	if(program.gestalt){
-		cleaner.gestalt = true;
+		cleaner.gestalt();
 	}
 	
 	if(program.filter){

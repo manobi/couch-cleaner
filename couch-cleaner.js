@@ -33,6 +33,7 @@ var Cleaner = function (options) {
 	this.db = connection.database(options.db);
 	
 	var _self = this;
+	var gestalt = false;
 	
 	/** @private {Array} _except **/
 	var _except = [];
@@ -58,6 +59,15 @@ var Cleaner = function (options) {
 		return this;
 	};
 
+	/** 
+	** @public {Function} gestalt
+	** @return {Object} this
+	** @param  {Array} ids
+	**/
+	this.gestalt = function(){
+		gestalt = true;
+		return this;
+	};
 	
 	this.setEvents = function(){
 	
@@ -124,7 +134,7 @@ var Cleaner = function (options) {
 	this.clear = function (callback) {
 		// No filters ? Burn them all
 		this.setEvents();
-		if(this.gestalt){
+		if(gestalt){
 			return this.db.all({startkey:'"_design/"',endkey:'"_design0"'},function(err, result){
 				if(result){
 					console.log("--gestalt");
