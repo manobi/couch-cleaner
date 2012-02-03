@@ -16,7 +16,7 @@ program
   .parse(process.argv);
 
 // database name || adress
-var database = process.ARGV[2];
+var database = process.argv[2];
 
 var options = {};
 if(database){
